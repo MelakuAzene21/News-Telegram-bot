@@ -1,1 +1,1 @@
-{"version":3,"file":"newsService.d.ts","sourceRoot":"","sources":["newsService.ts"],"names":[],"mappings":"AAMA,wBAAsB,eAAe,CAAC,QAAQ,CAAC,EAAE,MAAM,gBAgCtD"}
+{"version":3,"file":"newsService.d.ts","sourceRoot":"","sources":["newsService.ts"],"names":[],"mappings":"AAGA,MAAM,WAAW,OAAO;IACtB,KAAK,EAAE,MAAM,CAAC;IACd,GAAG,EAAE,MAAM,CAAC;IACZ,WAAW,CAAC,EAAE,MAAM,CAAC;IACrB,MAAM,CAAC,EAAE,MAAM,CAAC;CACjB;AAKD,wBAAsB,eAAe,CAAC,QAAQ,CAAC,EAAE,MAAM,GAAG,OAAO,CAAC,OAAO,EAAE,CAAC,CAqC3E"}

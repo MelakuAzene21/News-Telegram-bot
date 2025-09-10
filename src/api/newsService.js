@@ -14,7 +14,12 @@ async function getTopHeadlines(category) {
         const url = `${NEWSAPI_BASE}/top-headlines?country=us${category ? `&category=${category}` : ""}&apiKey=${env_1.env.NEWS_API_KEY}`;
         const res = await axios_1.default.get(url);
         if (res.data.articles && res.data.articles.length > 0) {
-            return res.data.articles.slice(0, 5);
+            return res.data.articles.slice(0, 5).map((a) => ({
+                title: a.title,
+                url: a.url,
+                description: a.description,
+                source: a.source?.name,
+            }));
         }
         throw new Error("NewsAPI returned no articles");
     }

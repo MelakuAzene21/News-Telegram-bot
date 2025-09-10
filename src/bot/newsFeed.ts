@@ -1,5 +1,5 @@
 import TelegramBot from "node-telegram-bot-api";
-import { getTopHeadlines } from "../api/newsService";
+import { getTopHeadlines, Article } from "../api/newsService";
 import cron from "node-cron";
 
 export function setupNewsFeed(bot: TelegramBot) {
@@ -15,7 +15,7 @@ export function setupNewsFeed(bot: TelegramBot) {
       }
 
       let message = "📰 *Daily News Update*\n\n";
-      articles.slice(0, 5).forEach((a, i) => {
+      articles.slice(0, 5).forEach((a: Article, i: number) => {
         message += `${i + 1}. <a href="${a.url}">${a.title}</a>\n\n`;
       });
 

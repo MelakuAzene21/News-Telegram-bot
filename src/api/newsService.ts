@@ -1,10 +1,17 @@
 import axios from "axios";
 import { env } from "../config/env";
 
+export interface Article {
+  title: string;
+  url: string;
+  description?: string;
+  source?: string;
+}
+
 const NEWSAPI_BASE = "https://newsapi.org/v2";
 const GNEWS_BASE = "https://gnews.io/api/v4";
 
-export async function getTopHeadlines(category?: string) {
+export async function getTopHeadlines(category?: string): Promise<Article[]> {
   try {
     // Try NewsAPI
     const url = `${NEWSAPI_BASE}/top-headlines?country=us${
@@ -13,7 +20,12 @@ export async function getTopHeadlines(category?: string) {
 
     const res = await axios.get(url);
     if (res.data.articles && res.data.articles.length > 0) {
-      return res.data.articles.slice(0, 5);
+      return res.data.articles.slice(0, 5).map((a: any) => ({
+        title: a.title,
+        url: a.url,
+        description: a.description,
+        source: a.source?.name,
+      }));
     }
     throw new Error("NewsAPI returned no articles");
   } catch (err) {
