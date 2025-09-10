@@ -1,6 +1,7 @@
 import TelegramBot from "node-telegram-bot-api";
 import { getTopHeadlines } from "../api/newsService";
 import { User } from "../db/userModel";
+import { formatArticleMarkdownV2 } from "./format";
 
 export function registerCommands(bot: TelegramBot) {
   bot.onText(/\/start/, (msg) => {
@@ -12,24 +13,31 @@ export function registerCommands(bot: TelegramBot) {
 
   bot.onText(/\/latest/, async (msg) => {
     const articles = await getTopHeadlines();
-    let response = "📰 Top Headlines:\n\n";
-    articles.forEach((a, i) => {
-      response += `${i + 1}. ${a.title}\n${a.url}\n\n`;
-    });
-    bot.sendMessage(msg.chat.id, response);
+    if (!articles.length) {
+      return bot.sendMessage(msg.chat.id, "No articles found.");
+    }
+
+    for (const article of articles) {
+      const text = formatArticleMarkdownV2(article as any);
+      await bot.sendMessage(msg.chat.id, text, {
+        parse_mode: "MarkdownV2",
+        disable_web_page_preview: false,
+      });
+    }
   });
 
   bot.onText(/\/categories/, (msg) => {
-    bot.sendMessage(msg.chat.id, "Choose a category:", {
+    bot.sendMessage(msg.chat.id, "📂 Choose a category:", {
       reply_markup: {
         inline_keyboard: [
-          [{ text: "Business", callback_data: "business" }],
-          [{ text: "Technology", callback_data: "technology" }],
-          [{ text: "Sports", callback_data: "sports" }],
+          [{ text: "💼 Business", callback_data: "category:business" }],
+          [{ text: "💻 Technology", callback_data: "category:technology" }],
+          [{ text: "⚽ Sports", callback_data: "category:sports" }],
         ],
       },
     });
   });
+  
 
   bot.onText(/\/subscribe/, async (msg) => {
     await User.updateOne(
