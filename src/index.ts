@@ -5,6 +5,7 @@ import { env } from "./config/env.js";
 import { registerCommands } from "./bot/commands.js";
 import { registerHandlers } from "./bot/handlers";
 import { startScheduler } from "./jobs/scheduler";
+import { setupNewsFeed } from "./bot/newsFeed";
 
 const app = express();
 
@@ -13,6 +14,7 @@ const bot = new TelegramBot(env.TELEGRAM_BOT_TOKEN, { polling: true });
 registerCommands(bot);
 registerHandlers(bot);
 startScheduler(bot);
+setupNewsFeed(bot);
 
 mongoose
   .connect(env.MONGO_URI)
